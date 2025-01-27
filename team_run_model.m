@@ -1,4 +1,4 @@
-function [binary_output,probability_output]=run_models(data_record, classification_model, verbose)
+function [binary_output,probability_output]=team_run_model(data_record, classification_model, verbose)
 
 classification_model=classification_model.classification_model;
 header=fileread(data_record);

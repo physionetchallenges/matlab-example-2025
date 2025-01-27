@@ -1,11 +1,11 @@
-function train_models(input_directory,output_directory, verbose)
+function team_train_model(input_directory,output_directory, verbose)
 
 if verbose>=1
     disp('Finding Challenge data...')
 end
 
 % Find the recordings
-records=dir(fullfile(input_directory,'**/*.hea'));
+records=dir(fullfile(input_directory,'**','*.hea'));
 num_records = length(records);
 
 if num_records<1
@@ -23,7 +23,7 @@ end
 features=[];
 labels=[];
 original_path=pwd;
-addpath(original_path)
+addpath(genpath(original_path))
 
 for j=1:num_records
 
@@ -47,13 +47,21 @@ for j=1:num_records
 end
 
 cd(original_path)
-rmpath(original_path)
+rmpath(genpath(original_path))
 
 classes=sort(unique(labels));
+
+if verbose>=1
+    fprintf('Training the model on the data... \n')
+end
 
 model=TreeBagger(50,features,labels);
 
 save_models(output_directory, model, classes)
+
+if verbose>=1
+    fprintf('Done. \n')
+end
 
 function save_models(output_directory, classification_model, classes)
 

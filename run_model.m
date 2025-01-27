@@ -24,19 +24,15 @@ if startsWith(output_directory,'.')
 end
 
 % Load the model
-model = load_models(model_directory, verbose); % Teams: Implement this function!!
+model = load_model(model_directory, verbose); % Teams: Implement this function!!
 
 % Find challenge data
 if verbose>=1
     fprintf('Finding Challenge data... \n')
 end
 
-records=dir(fullfile(input_directory,'**/*.hea'));
+records=dir(fullfile(input_directory,'**','*.hea'));
 num_records = length(records);
-
-if verbose>=1
-    fprintf('Loading data for %d records...\n', num_records)
-end
 
 % Create the output directory if it doesn't exist
 if ~isfolder(output_directory)
@@ -49,7 +45,7 @@ if verbose>=1
 end
 
 original_path=pwd;
-addpath(original_path)
+addpath(genpath(original_path))
 
 for j=1:num_records
 
@@ -62,7 +58,7 @@ for j=1:num_records
         if ~strcmp(pwd,records(j).folder)
             cd(records(j).folder)
         end
-        [binary_output,probability_output]=run_models(data_record, model, verbose);
+        [binary_output,probability_output]=team_run_model(data_record, model, verbose);
     catch
         if allow_failures==1
             disp('Failed')
@@ -116,10 +112,13 @@ for j=1:num_records
 
 end
 
-rmpath(original_path)
+rmpath(genpath(original_path))
 cd(original_path)
 
-disp('Done.')
+if verbose>=1
+    disp('Done.')
+end
+
 end
 
 function save_outputs(output_file, record, binary_output, probability_output)

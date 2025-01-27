@@ -23,50 +23,68 @@ where
 
 You can run your trained model(s) by running
 
-    run_model(test_data, model, test_outputs)
+    run_model(holdout_data, model, holdout_outputs)
 
 where
 
-- `test_data` (input; required) is a folder with the holdout data files, which will not necessarily include the labels;
+- `holdout_data` (input; required) is a folder with the holdout data files, which will not necessarily include the labels;
 - `model` (input; required) is a folder for loading your model; and
-- `test_outputs` (output; required) is a folder for saving your model outputs.
+- `holdout_outputs` (output; required) is a folder for saving your model outputs.
   
 The [Challenge website](https://physionetchallenges.org/2025/#data) provides a training database with a description of the contents and structure of the data files.
 
 You can evaluate your model by pulling or downloading the [evaluation code](https://github.com/physionetchallenges/evaluation-2025) and running
 
-    evaluate_model(labels, test_outputs, scores.csv)
+    evaluate_model(labels, holdout_outputs, scores.csv)
 
 where
 
 - `labels`(input; required) is a folder with labels for the holdout data files, which must include the labels;
-- `test_outputs` (input; required) is a folder containing files with your model's outputs for the data; and
+- `holdout_outputs` (input; required) is a folder containing files with your model's outputs for the data; and
 - `scores.csv` (output; optional) is file with a collection of scores for your model.
+
+You can use the provided training set for the `training_data` and `holdout_data` files, but we will use different datasets for the validation and test sets, and we will not provide the labels to your code.
 
 ## How do I create data for these scripts?
 
-You can use the scripts in [this repository](https://github.com/physionetchallenges/python-example-2025?tab=readme-ov-file) convert [CODE-15% dataset](https://zenodo.org/records/4916206) to [WFDB](https://wfdb.io/) format. 
+You can use the scripts in [this repository](https://github.com/physionetchallenges/python-example-2025?tab=readme-ov-file) convert [CODE-15% dataset](https://zenodo.org/records/4916206) to [WFDB](https://wfdb.io/) format. The instructions use `code15_hdf5` as the path for the input data files and `code15_wfdb` for the output data files, but you can replace them with the absolute or relative paths for the files on your machine.
+
+1. Download and unzip one or more of the `exam_part` files and the `exams.csv` file in the [CODE-15% dataset](https://zenodo.org/records/4916206).
+
+2. Download and unzip the Chagas labels, i.e., the [`code15_chagas_labels.csv`](https://physionetchallenges.org/2025/data/code15_chagas_labels.zip) file.
+
+3. Convert the CODE-15% dataset to WFDB format, with the available demographics information and Chagas labels in the WFDB header file, by running
+
+        python prepare_code15_data.py \
+            -i code15_hdf5/exams_part0.hdf5 code15_hdf5/exams_part1.hdf5 \
+            -d code15_hdf5/exams.csv \
+            -l code15_hdf5/code15_chagas_labels.csv \
+            -o code15_wfdb
+
+Each `exam_part` file in the [CODE-15% dataset](https://zenodo.org/records/4916206) contains approximately 20,000 ECG recordings. You can include more or fewer of these files to increase or decrease the number of ECG recordings, respectively. You may want to start with fewer ECG recordings to debug your code.
+
+Additionaly, you can add the `-f mat` argument to convert to `.mat` files instead of `.dat` files. However, we will use WFDB format with `.dat` files to run your submitted code.
 
 ## Which scripts I can edit?
 
 Please edit the following script to add your code:
 
-* `train_models.m` is a script for training your models.
-* `load_models.m` is a script for loading your trained models.
-* `run_models.m` is a script for running your trained models.
+* `team_train_model.m` is a script for training your model.
+* `load_model.m` is a script for loading your trained model.
+* `team_run_model.m` is a script for running your trained model.
 
 Please do **not** edit the following scripts. We will use the unedited versions of these scripts when running your code:
 
-* `train_model.m` is a script for training your model(s).
-* `run_model.m` is a script for running your trained model(s).
+* `train_model.m` is a script for training your model.
+* `run_model.m` is a script for running your trained model.
 
 These scripts must remain in the root path of your repository, but you can put other scripts and other files elsewhere in your repository.
 
 ## How do I train, save, load, and run my model?
 
-To train and save your model, please edit the `train_models.m` script. Please do not edit the input or output arguments of this function.
+To train and save your model, please edit the `team_train_model.m` script. Please do not edit the input or output arguments of this function.
 
-To load and run your trained model, please edit the `load_models.m` and `run_model.m` scripts. Please do not edit the input or output arguments of these functions.
+To load and run your trained model, please edit the `load_model.m` and `team_run_model.m` scripts. Please do not edit the input or output arguments of these functions.
 
 ## What else do I need?
 
@@ -79,7 +97,7 @@ Please see the [Challenge website](https://physionetchallenges.org/2025/) for mo
 ## Useful links
 
 * [Challenge website](https://physionetchallenges.org/2025/)
-* [Python example code](https://github.com/physionetchallenges/python-example-2024)
+* [Python example code](https://github.com/physionetchallenges/python-example-2025)
 * [Evaluation code](https://github.com/physionetchallenges/evaluation-2025)
 * [Frequently asked questions (FAQ) for this year's Challenge](https://physionetchallenges.org/2025/faq/)
 * [Frequently asked questions (FAQ) about the Challenges in general](https://physionetchallenges.org/faq/)
