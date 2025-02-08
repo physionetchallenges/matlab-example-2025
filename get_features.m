@@ -1,16 +1,6 @@
 function features=get_features(file,header)
 
-try
-    signals=rdsamp(file(1:end-4));
-catch
-    try
-        signals=load(strrep(file,'.hea','.mat'));
-        signals=signals.val';
-        signals=scale_signals(signals,header);
-    catch
-        error('%s could not be loaded',file);
-    end
-end
+signals=read_challenge_signals(file,header);
 
 features(1)=nanmean(signals(:,2));
 features(2)=nanstd(signals(:,2));

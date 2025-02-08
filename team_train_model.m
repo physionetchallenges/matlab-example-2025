@@ -23,7 +23,7 @@ end
 features=[];
 labels=[];
 original_path=pwd;
-addpath(genpath(original_path))
+if ~isdeployed addpath(genpath(original_path)); end
 
 for j=1:num_records
 

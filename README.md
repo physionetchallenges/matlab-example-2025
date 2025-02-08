@@ -10,7 +10,7 @@ For this example, we implemented a Random Forest model with several simple featu
 
 First, you can download and create data for these scripts by following the instructions in the "How do I create data for these scripts?" section in the [Python example code repository](https://github.com/physionetchallenges/python-example-2025).
 
-Second, you must install the [WFDB](https://physionet.org/physiotools/wag/wag.htm) dependencies for these scripts by following the instructions on [this page](https://archive.physionet.org/physiotools/matlab/wfdb-app-matlab/).
+Second, you can install the [WFDB](https://physionet.org/physiotools/wag/wag.htm) dependencies for these scripts by following the instructions on [this page](https://archive.physionet.org/physiotools/matlab/wfdb-app-matlab/). However, we have provided MATLAB-only code for loading WFDB files with `.dat` and `.mat` signal data.
 
 You can train your model(s) by running
 
@@ -47,31 +47,17 @@ You can use the provided training set for the `training_data` and `holdout_data`
 
 ## How do I create data for these scripts?
 
-You can use the scripts in [this repository](https://github.com/physionetchallenges/python-example-2025?tab=readme-ov-file) convert [CODE-15% dataset](https://zenodo.org/records/4916206) to [WFDB](https://wfdb.io/) format. The instructions use `code15_hdf5` as the path for the input data files and `code15_wfdb` for the output data files, but you can replace them with the absolute or relative paths for the files on your machine.
+You can use the scripts in [this repository](https://github.com/physionetchallenges/python-example-2025?tab=readme-ov-file) to convert the Challenge data to [WFDB](https://wfdb.io/) format.
 
-1. Download and unzip one or more of the `exam_part` files and the `exams.csv` file in the [CODE-15% dataset](https://zenodo.org/records/4916206).
-
-2. Download and unzip the Chagas labels, i.e., the [`code15_chagas_labels.csv`](https://physionetchallenges.org/2025/data/code15_chagas_labels.zip) file.
-
-3. Convert the CODE-15% dataset to WFDB format, with the available demographics information and Chagas labels in the WFDB header file, by running
-
-        python prepare_code15_data.py \
-            -i code15_hdf5/exams_part0.hdf5 code15_hdf5/exams_part1.hdf5 \
-            -d code15_hdf5/exams.csv \
-            -l code15_hdf5/code15_chagas_labels.csv \
-            -o code15_wfdb
-
-Each `exam_part` file in the [CODE-15% dataset](https://zenodo.org/records/4916206) contains approximately 20,000 ECG recordings. You can include more or fewer of these files to increase or decrease the number of ECG recordings, respectively. You may want to start with fewer ECG recordings to debug your code.
-
-Additionaly, you can add the `-f mat` argument to convert to `.mat` files instead of `.dat` files. However, we will use WFDB format with `.dat` files to run your submitted code.
+Additionaly, you can add the `-f mat` argument to convert to `.mat` files instead of `.dat` files. However, we will use WFDB format data to evaluate the code on the validation and test sets.
 
 ## Which scripts I can edit?
 
 Please edit the following script to add your code:
 
-* `team_train_model.m` is a script for training your model.
-* `load_model.m` is a script for loading your trained model.
-* `team_run_model.m` is a script for running your trained model.
+* `team_train_model.m` is a script for training your models.
+* `load_model.m` is a script for loading your trained models.
+* `team_run_model.m` is a script for running your trained models.
 
 Please do **not** edit the following scripts. We will use the unedited versions of these scripts when running your code:
 
