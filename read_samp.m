@@ -23,6 +23,10 @@ channels=sigInfo(1).channels;
 data_length=sigInfo(1).LengthSamples;
 sig_format=sigInfo(1).Format;
 
+if contains(sig_format,'x')
+    sig_format=extractBefore(sig_format,'x');
+end
+
 switch sig_format
     case '8'
         data_format = 'int8';
